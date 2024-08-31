@@ -40,31 +40,31 @@ TOKEN3 = '3_test_token'
 def test_no_auth():
     '''Test wis2box without authentication'''
 
-    headers = {'X-Original-URI': f'/{TOPIC}', 'Authorization': 'Bearer'}
+    headers = {'X-Forwarded-Uri': f'/{TOPIC}', 'Authorization': 'Bearer'}
     r = requests.get(URL + '/authorize', headers=headers)
     assert r.status_code == 200
 
-    headers = {'X-Original-URI': f'/{TOPIC}?token={TOKEN}'}
+    headers = {'X-Forwarded-Uri': f'/{TOPIC}?token={TOKEN}'}
     r = requests.get(URL + '/authorize', headers=headers)
     assert r.status_code == 200
 
     headers = {
-        'X-Original-URI': f'/{TOPIC}',
+        'X-Forwarded-Uri': f'/{TOPIC}',
         'Authorization': f'Bearer {TOKEN}',
     }
     r = requests.get(URL + '/authorize', headers=headers)
     assert r.status_code == 200
 
     headers = {
-        'X-Original-URI': f'/oapi/collections/stations/items?token={TOKEN}',
-        'X-Api-Http-Method': 'GET'
+        'X-Forwarded-Uri': f'/oapi/collections/stations/items?token={TOKEN}',
+        'X-Forwarded-Method': 'GET'
     }
     r = requests.get(URL + '/authorize', headers=headers)
     assert r.status_code == 200
 
     headers = {
-        'X-Original-URI': f'/{TOPIC4}',
-        'X-Api-Http-Method': 'GET'
+        'X-Forwarded-URI': f'/{TOPIC4}',
+        'X-Forwarded-Method': 'GET'
     }
     r = requests.get(URL + '/authorize', headers=headers)
     assert r.status_code == 200
@@ -94,53 +94,53 @@ def test_header_auth():
     '''Test wis2box header authentication'''
 
     headers = {
-        'X-Original-URI': f'/{TOPIC}',
+        'X-Forwarded-Uri': f'/{TOPIC}',
         'Authorization': 'Bearer',
     }
     r = requests.get(URL + '/authorize', headers=headers)
     assert r.status_code == 401
 
-    headers['X-Original-URI'] = f'/{TOPIC1}'
+    headers['X-Forwarded-Uri'] = f'/{TOPIC1}'
     r = requests.get(URL + '/authorize', headers=headers)
     assert r.status_code == 401
 
-    headers['X-Original-URI'] = f'/{TOPIC2}'
+    headers['X-Forwarded-Uri'] = f'/{TOPIC2}'
     r = requests.get(URL + '/authorize', headers=headers)
     assert r.status_code == 200
 
     headers = {
-        'X-Original-URI': f'/{TOPIC}',
+        'X-Forwarded-Uri': f'/{TOPIC}',
         'Authorization': f'Bearer {TOKEN}',
     }
     r = requests.get(URL + '/authorize', headers=headers)
     assert r.status_code == 200
 
-    headers['X-Original-URI'] = f'/{TOPIC1}'
+    headers['X-Forwarded-Uri'] = f'/{TOPIC1}'
     r = requests.get(URL + '/authorize', headers=headers)
     assert r.status_code == 401
 
-    headers['X-Original-URI'] = f'/{TOPIC2}'
+    headers['X-Forwarded-Uri'] = f'/{TOPIC2}'
     r = requests.get(URL + '/authorize', headers=headers)
     assert r.status_code == 200
 
     headers = {
-        'X-Original-URI': f'/{TOPIC3}',
+        'X-Forwarded-Uri': f'/{TOPIC3}',
     }
     r = requests.get(URL + '/authorize', headers=headers)
     assert r.status_code == 200
 
     headers = {
-        'X-Original-URI': f'/{TOPIC3}',
+        'X-Forwarded-Uri': f'/{TOPIC3}',
         'Authorization': f'Bearer {TOKEN3}',
-        'X-Api-Http-Method': 'POST'
+        'X-Forwarded-Method': 'POST'
     }
     r = requests.get(URL + '/authorize', headers=headers)
     assert r.status_code == 200
 
     headers = {
-        'X-Original-URI': f'/{TOPIC3}',
+        'X-Forwarded-Uri': f'/{TOPIC3}',
         'Authorization': f'Bearer {TOKEN1}',
-        'X-Api-Http-Method': 'POST'
+        'X-Forwarded-Method': 'POST'
     }
     r = requests.get(URL + '/authorize', headers=headers)
     assert r.status_code == 401
@@ -150,21 +150,21 @@ def test_token_auth():
     '''Test wis2box token authentication'''
 
     headers = {
-        'X-Original-URI': f'/{TOPIC}',
+        'X-Forwarded-Uri': f'/{TOPIC}',
         'Authorization': 'Bearer',
     }
     r = requests.get(URL + '/authorize?token=', headers=headers)
     assert r.status_code == 401
 
-    headers['X-Original-URI'] = f'/{TOPIC2}'
+    headers['X-Forwarded-Uri'] = f'/{TOPIC2}'
     r = requests.get(URL + '/authorize', headers=headers)
     assert r.status_code == 200
 
-    headers = {'X-Original-URI': f'/{TOPIC}?token={TOKEN}'}
+    headers = {'X-Forwarded-Uri': f'/{TOPIC}?token={TOKEN}'}
     r = requests.get(URL + '/authorize', headers=headers)
     assert r.status_code == 200
 
-    headers = {'X-Original-URI': f'/{TOPIC1}?token={TOKEN1}'}
+    headers = {'X-Forwarded-Uri': f'/{TOPIC1}?token={TOKEN1}'}
     r = requests.get(URL + '/authorize', headers=headers)
     assert r.status_code == 200
 

@@ -58,7 +58,7 @@ def get_response(code: int, description: str) -> Tuple[dict, int]:
 @app.route('/authorize')
 def authorize():
     api_key = None
-    request_uri = request.headers.get('X-Original-URI')
+    request_uri = request.headers.get('X-Forwarded-Uri')
     request_ = request.from_values(request_uri)
 
     metadata_collections = [
@@ -67,7 +67,7 @@ def authorize():
         'stations'
     ]
 
-    if (request.headers.get('X-Api-Http-Method', 'GET') == 'GET' and
+    if (request.headers.get('X-Forwarded-Method', 'GET') == 'GET' and
             any([x in request_uri for x in metadata_collections])):
         LOGGER.debug('API metadata request')
         msg = 'Resource is open'
