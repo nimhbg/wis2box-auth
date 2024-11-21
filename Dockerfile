@@ -19,13 +19,23 @@
 #
 ###############################################################################
 
-FROM python:3.9.13-slim
+FROM python:3.9.20-slim
 
 LABEL maintainer="tomkralidis@gmail.com"
 
 # copy the app
 COPY . /app
 
+# Update and upgrade all packages to their latest versions
+RUN apt-get update \
+    && apt-get install python3-setuptools python3-pip -y --no-install-recommends \
+    && apt-get upgrade python3-setuptools python3-pip -y --no-install-recommends \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
+
+# Upgrade setuptools to a safe version
+RUN pip3 install --upgrade setuptools>=70.0.0
+    
 # install wis2box_auth
 RUN cd /app \
     && pip3 install -r requirements.txt \
